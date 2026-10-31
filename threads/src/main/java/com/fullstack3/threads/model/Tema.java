@@ -16,6 +16,9 @@ public class Tema {
     @Column(name = "titulo", nullable = false, length = 100)
     private String titulo;
 
+    @Column(name = "nombre_usuario", nullable = false, length = 100)
+    private String nombreUsuario;
+
     @Column(name = "fecha_creacion", nullable = false)
     private LocalDateTime fechaCreacion;
 
@@ -26,6 +29,9 @@ public class Tema {
     @JoinColumn(name = "id_categoria", nullable = false)
     private Categoria categoria;
 
+    @OneToMany(mappedBy = "tema", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Comentario> comentarios;
+
     @PrePersist
     public void prePersist() {
         this.fechaCreacion = LocalDateTime.now();
@@ -34,9 +40,10 @@ public class Tema {
     public Tema() {
     }
 
-    public Tema(Long idTema, String titulo, LocalDateTime fechaCreacion, LocalDateTime fechaCierre, Categoria categoria) {
+    public Tema(Long idTema, String titulo, String nombreUsuario, LocalDateTime fechaCreacion, LocalDateTime fechaCierre, Categoria categoria) {
         this.idTema = idTema;
         this.titulo = titulo;
+        this.nombreUsuario = nombreUsuario;
         this.fechaCreacion = fechaCreacion;
         this.fechaCierre = fechaCierre;
         this.categoria = categoria;
@@ -56,6 +63,14 @@ public class Tema {
 
     public void setTitulo(String titulo) {
         this.titulo = titulo;
+    }
+
+    public String getNombreUsuario() {
+        return nombreUsuario;
+    }
+
+    public void setNombreUsuario(String nombreUsuario) {
+        this.nombreUsuario = nombreUsuario;
     }
 
     public LocalDateTime getFechaCreacion() {
@@ -82,8 +97,11 @@ public class Tema {
         this.categoria = categoria;
     }
 
-    @OneToMany(mappedBy = "tema", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Comentario> comentarios;
+    public List<Comentario> getComentarios() {
+        return comentarios;
+    }
 
-
+    public void setComentarios(List<Comentario> comentarios) {
+        this.comentarios = comentarios;
+    }
 }

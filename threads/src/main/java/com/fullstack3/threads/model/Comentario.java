@@ -15,6 +15,9 @@ public class Comentario {
     @Column(name = "contenido", nullable = false, length = 500)
     private String contenido;
 
+    @Column(name = "nombre_usuario", nullable = false, length = 100)
+    private String nombreUsuario;
+
     @Column(name = "fecha_creacion", nullable = false)
     private LocalDateTime fechaCreacion;
 
@@ -37,9 +40,10 @@ public class Comentario {
     public Comentario() {
     }
 
-    public Comentario(Long idComentario, String contenido, LocalDateTime fechaCreacion, LocalDateTime fechaModificacion, LocalDateTime fechaCierre, Tema tema) {
+    public Comentario(Long idComentario, String contenido, String nombreUsuario, LocalDateTime fechaCreacion, LocalDateTime fechaModificacion, LocalDateTime fechaCierre, Tema tema) {
         this.idComentario = idComentario;
         this.contenido = contenido;
+        this.nombreUsuario = nombreUsuario;
         this.fechaCreacion = fechaCreacion;
         this.fechaModificacion = fechaModificacion;
         this.fechaCierre = fechaCierre;
@@ -60,6 +64,14 @@ public class Comentario {
 
     public void setContenido(String contenido) {
         this.contenido = contenido;
+    }
+
+    public String getNombreUsuario() {
+        return nombreUsuario;
+    }
+
+    public void setNombreUsuario(String nombreUsuario) {
+        this.nombreUsuario = nombreUsuario;
     }
 
     public LocalDateTime getFechaCreacion() {
