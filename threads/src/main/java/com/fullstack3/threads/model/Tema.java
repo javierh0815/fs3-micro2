@@ -16,6 +16,9 @@ public class Tema {
     @Column(name = "titulo", nullable = false, length = 100)
     private String titulo;
 
+    @Column(name = "cod_usuario", nullable = false)
+    private Long codUsuario;
+
     @Column(name = "nombre_usuario", nullable = false, length = 100)
     private String nombreUsuario;
 
@@ -40,9 +43,10 @@ public class Tema {
     public Tema() {
     }
 
-    public Tema(Long idTema, String titulo, String nombreUsuario, LocalDateTime fechaCreacion, LocalDateTime fechaCierre, Categoria categoria) {
+    public Tema(Long idTema, String titulo, Long codUsuario, String nombreUsuario, LocalDateTime fechaCreacion, LocalDateTime fechaCierre, Categoria categoria) {
         this.idTema = idTema;
         this.titulo = titulo;
+        this.codUsuario = codUsuario;
         this.nombreUsuario = nombreUsuario;
         this.fechaCreacion = fechaCreacion;
         this.fechaCierre = fechaCierre;
@@ -63,6 +67,14 @@ public class Tema {
 
     public void setTitulo(String titulo) {
         this.titulo = titulo;
+    }
+
+    public Long getCodUsuario() {
+        return codUsuario;
+    }
+
+    public void setCodUsuario(Long codUsuario) {
+        this.codUsuario = codUsuario;
     }
 
     public String getNombreUsuario() {

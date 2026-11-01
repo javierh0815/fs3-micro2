@@ -15,6 +15,11 @@ public class Comentario {
     @Column(name = "contenido", nullable = false, length = 500)
     private String contenido;
 
+    // Código único del usuario (vinculado a la secuencia de Oracle)
+    @Column(name = "cod_usuario", nullable = false)
+    private Long codUsuario;
+
+    // Nombre del usuario para mostrar directamente en el foro
     @Column(name = "nombre_usuario", nullable = false, length = 100)
     private String nombreUsuario;
 
@@ -40,9 +45,10 @@ public class Comentario {
     public Comentario() {
     }
 
-    public Comentario(Long idComentario, String contenido, String nombreUsuario, LocalDateTime fechaCreacion, LocalDateTime fechaModificacion, LocalDateTime fechaCierre, Tema tema) {
+    public Comentario(Long idComentario, String contenido, Long codUsuario, String nombreUsuario, LocalDateTime fechaCreacion, LocalDateTime fechaModificacion, LocalDateTime fechaCierre, Tema tema) {
         this.idComentario = idComentario;
         this.contenido = contenido;
+        this.codUsuario = codUsuario;
         this.nombreUsuario = nombreUsuario;
         this.fechaCreacion = fechaCreacion;
         this.fechaModificacion = fechaModificacion;
@@ -64,6 +70,14 @@ public class Comentario {
 
     public void setContenido(String contenido) {
         this.contenido = contenido;
+    }
+
+    public Long getCodUsuario() {
+        return codUsuario;
+    }
+
+    public void setCodUsuario(Long codUsuario) {
+        this.codUsuario = codUsuario;
     }
 
     public String getNombreUsuario() {
