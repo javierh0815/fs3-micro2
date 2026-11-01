@@ -28,6 +28,9 @@ public class Tema {
     @Column(name = "fecha_creacion", nullable = false)
     private LocalDateTime fechaCreacion;
 
+    @Column (name = "fecha_modificacion", nullable = true)
+    private LocalDateTime fechaModificacion;
+
     @Column(name = "fecha_cierre", nullable = true)
     private LocalDateTime fechaCierre;
 
@@ -46,12 +49,13 @@ public class Tema {
     public Tema() {
     }
 
-    public Tema(Long idTema, String codigo_tema, String titulo, Long codUsuario, String nombreUsuario, LocalDateTime fechaCreacion, LocalDateTime fechaCierre, Categoria categoria) {
+    public Tema(Long idTema, String codigo_tema, String titulo, Long codUsuario, String nombreUsuario, LocalDateTime fechaCreacion, LocalDateTime fechaModificacion, LocalDateTime fechaCierre, Categoria categoria) {
         this.idTema = idTema;
         this.codigo_tema = codigo_tema;
         this.titulo = titulo;
         this.codUsuario = codUsuario;
         this.nombreUsuario = nombreUsuario;
+        this.fechaModificacion = fechaModificacion;
         this.fechaCreacion = fechaCreacion;
         this.fechaCierre = fechaCierre;
         this.categoria = categoria;
@@ -127,5 +131,13 @@ public class Tema {
 
     public void setCodigo_tema(String codigo_tema) {
         this.codigo_tema = codigo_tema;
+    }
+
+    public LocalDateTime getFechaModificacion() {
+        return fechaModificacion;
+    }
+
+    public void setFechaModificacion(LocalDateTime fechaModificacion) {
+        this.fechaModificacion = fechaModificacion;
     }
 }
