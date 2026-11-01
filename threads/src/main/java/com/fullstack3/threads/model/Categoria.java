@@ -1,5 +1,6 @@
 package com.fullstack3.threads.model;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import jakarta.persistence.*;
@@ -19,14 +20,26 @@ public class Categoria {
     @Column(name ="categoria", nullable = false, length = 100)
     private String nombre_categoria;
 
+    @Column(name = "fecha_creacion", nullable = false)
+    private LocalDateTime fechaCreacion;
+
+    @Column(name = "fecha_modificacion", nullable = true)
+    private LocalDateTime fechaModificacion;
+
+    @Column(name = "fecha_cierre", nullable = true)
+    private LocalDateTime fechaCierre;
+
 
     public Categoria() {
     }
 
-    public Categoria(Long idCategoria, String codigo_categoria, String nombre_categoria) {
+    public Categoria(Long idCategoria, String codigo_categoria, String nombre_categoria, LocalDateTime fechaCreacion, LocalDateTime fechaModificacion, LocalDateTime fechaCierre) {
         this.idCategoria = idCategoria;
         this.codigo_categoria = codigo_categoria;
         this.nombre_categoria = nombre_categoria;
+        this.fechaCreacion = fechaCreacion;
+        this.fechaModificacion = fechaModificacion;
+        this.fechaCierre = fechaCierre;
     }
 
     public Long getIdCategoria() {
@@ -53,11 +66,46 @@ public class Categoria {
         this.codigo_categoria = codigo_categoria;
     }
 
+    public LocalDateTime getFechaCreacion() {
+        return fechaCreacion;
+    }
+
+    public void setFechaCreacion(LocalDateTime fechaCreacion) {
+        this.fechaCreacion = fechaCreacion;
+    }
+
+    public LocalDateTime getFechaModificacion() {
+        return fechaModificacion;
+    }
+
+    public void setFechaModificacion(LocalDateTime fechaModificacion) {
+        this.fechaModificacion = fechaModificacion;
+    }
+
+    public LocalDateTime getFechaCierre() {
+        return fechaCierre;
+    }
+
+    public void setFechaCierre(LocalDateTime fechaCierre) {
+        this.fechaCierre = fechaCierre;
+    }
+
 
     @OneToMany(mappedBy = "categoria", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Tema> temas;
 
+    
+    @PrePersist
+    public void prePersist() {
+        LocalDateTime ahora = LocalDateTime.now();
+        this.fechaCreacion = ahora;
+        this.fechaModificacion = ahora;
+    }
 
+    @PreUpdate
+    public void preUpdate() {
+        this.fechaModificacion = LocalDateTime.now();
+    }
 
 
 
