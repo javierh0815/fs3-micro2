@@ -12,6 +12,9 @@ public class Tema {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_tema")
     private Long idTema;
+
+    @Column (name = "codigo_tema", nullable = false, unique = true, length = 10)
+    private String codigo_tema;
     
     @Column(name = "titulo", nullable = false, length = 100)
     private String titulo;
@@ -43,8 +46,9 @@ public class Tema {
     public Tema() {
     }
 
-    public Tema(Long idTema, String titulo, Long codUsuario, String nombreUsuario, LocalDateTime fechaCreacion, LocalDateTime fechaCierre, Categoria categoria) {
+    public Tema(Long idTema, String codigo_tema, String titulo, Long codUsuario, String nombreUsuario, LocalDateTime fechaCreacion, LocalDateTime fechaCierre, Categoria categoria) {
         this.idTema = idTema;
+        this.codigo_tema = codigo_tema;
         this.titulo = titulo;
         this.codUsuario = codUsuario;
         this.nombreUsuario = nombreUsuario;
@@ -115,5 +119,13 @@ public class Tema {
 
     public void setComentarios(List<Comentario> comentarios) {
         this.comentarios = comentarios;
+    }
+
+    public String getCodigo_tema() {
+        return codigo_tema;
+    }
+
+    public void setCodigo_tema(String codigo_tema) {
+        this.codigo_tema = codigo_tema;
     }
 }

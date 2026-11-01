@@ -13,6 +13,8 @@ public class Categoria {
     @Column(name = "id_categoria")
     private Long idCategoria;
 
+    @Column(name = "codigo_categoria", nullable = false, unique = true, length = 10)
+    private String codigo_categoria;
 
     @Column(name ="categoria", nullable = false, length = 100)
     private String nombre_categoria;
@@ -21,8 +23,9 @@ public class Categoria {
     public Categoria() {
     }
 
-    public Categoria(Long idCategoria, String nombre_categoria) {
+    public Categoria(Long idCategoria, String codigo_categoria, String nombre_categoria) {
         this.idCategoria = idCategoria;
+        this.codigo_categoria = codigo_categoria;
         this.nombre_categoria = nombre_categoria;
     }
 
@@ -40,6 +43,14 @@ public class Categoria {
 
     public void setNombre_categoria(String nombre_categoria) {
         this.nombre_categoria = nombre_categoria;
+    }
+
+    public String getCodigo_categoria() {
+        return codigo_categoria;
+    }
+
+    public void setCodigo_categoria(String codigo_categoria) {
+        this.codigo_categoria = codigo_categoria;
     }
 
 
