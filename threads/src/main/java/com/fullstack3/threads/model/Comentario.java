@@ -12,7 +12,7 @@ public class Comentario {
     @Column(name = "id_comentario")
     private Long idComentario;
 
-    @Column(name = "codigo_comentario", nullable = false, unique = true, length = 10)
+    @Column(name = "codigo_comentario", nullable = false, unique = true, insertable = false, updatable = false)
     private String codigoComentario;
 
     @Column(name = "contenido", nullable = false, length = 500)

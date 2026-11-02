@@ -13,7 +13,7 @@ public class Tema {
     @Column(name = "id_tema")
     private Long idTema;
 
-    @Column (name = "codigo_tema", nullable = false, unique = true, length = 10)
+    @Column (name = "codigo_tema", nullable = false, unique = true, insertable = false, updatable = false)
     private String codigoTema;
     
     @Column(name = "titulo", nullable = false, length = 100)
