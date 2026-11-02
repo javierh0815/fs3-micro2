@@ -4,17 +4,21 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.time.LocalDateTime;
 import com.fullstack3.threads.model.Tema;
+import com.fullstack3.threads.model.Categoria;
 import com.fullstack3.threads.repository.TemaRepository;
+import com.fullstack3.threads.repository.CategoriaRepository; 
 import com.fullstack3.threads.exception.TemaNotFoundExceptionHandler;
-import com.fullstack3.threads.exception.TemaAlreadyExistsExceptionHandler;
+
 
 @Service
 public class TemaServiceImpl implements TemaService {
 
     private final TemaRepository temaRepository;
+    private final CategoriaRepository categoriaRepository; 
 
-    public TemaServiceImpl(TemaRepository temaRepository){
+    public TemaServiceImpl(TemaRepository temaRepository, CategoriaRepository categoriaRepository){
         this.temaRepository = temaRepository;
+        this.categoriaRepository = categoriaRepository;
     }
 
     @Override
@@ -30,10 +34,15 @@ public class TemaServiceImpl implements TemaService {
 
     @Override
     public Tema createTema(Tema tema) {
-        if (temaRepository.existsByCodigoTema(tema.getCodigoTema())) {
-            throw new TemaAlreadyExistsExceptionHandler("El tema con el código " + tema.getCodigoTema() + " ya existe.");
+
+        if (tema.getCategoria() != null && tema.getCategoria().getIdCategoria() != null) {
+            Categoria categoriaReal = categoriaRepository.findById(tema.getCategoria().getIdCategoria())
+                    .orElseThrow(() -> new RuntimeException("Categoría no encontrada con id: " + tema.getCategoria().getIdCategoria()));
+            tema.setCategoria(categoriaReal);
         }
+
         tema.setFechaCreacion(LocalDateTime.now());
+        
         return temaRepository.save(tema);
     }
 
@@ -45,7 +54,6 @@ public class TemaServiceImpl implements TemaService {
         existingTema.setTitulo(tema.getTitulo());
         existingTema.setCodUsuario(tema.getCodUsuario());
         existingTema.setNombreUsuario(tema.getNombreUsuario());
-        existingTema.setCodigoTema(tema.getCodigoTema());
         existingTema.setFechaModificacion(LocalDateTime.now());
 
         return temaRepository.save(existingTema);
@@ -57,5 +65,4 @@ public class TemaServiceImpl implements TemaService {
                 .orElseThrow(() -> new TemaNotFoundExceptionHandler("Tema no encontrado con id: " + id));
         temaRepository.delete(existingTema);
     }
-
 }

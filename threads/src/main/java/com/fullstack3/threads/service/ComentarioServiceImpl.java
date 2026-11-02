@@ -4,17 +4,20 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.time.LocalDateTime;
 import com.fullstack3.threads.model.Comentario;
+import com.fullstack3.threads.model.Tema;
 import com.fullstack3.threads.repository.ComentarioRepository;
+import com.fullstack3.threads.repository.TemaRepository;
 import com.fullstack3.threads.exception.ComentarioNotFoundExceptionHandler;
-import com.fullstack3.threads.exception.ComentarioAlreadyExists;
 
 @Service 
 public class ComentarioServiceImpl implements ComentarioService {
 
     private final ComentarioRepository comentarioRepository;
+    private final TemaRepository temaRepository; 
 
-    public ComentarioServiceImpl(ComentarioRepository comentarioRepository){
+    public ComentarioServiceImpl(ComentarioRepository comentarioRepository, TemaRepository temaRepository){
         this.comentarioRepository = comentarioRepository;
+        this.temaRepository = temaRepository;
     }
 
     @Override
@@ -30,10 +33,15 @@ public class ComentarioServiceImpl implements ComentarioService {
 
     @Override
     public Comentario createComentario(Comentario comentario) {
-        if (comentarioRepository.existsByCodigoComentario(comentario.getCodigoComentario())) {
-            throw new ComentarioAlreadyExists("El comentario con el código " + comentario.getCodigoComentario() + " ya existe.");
+
+        if (comentario.getTema() != null && comentario.getTema().getIdTema() != null) {
+            Tema temaReal = temaRepository.findById(comentario.getTema().getIdTema())
+                    .orElseThrow(() -> new RuntimeException("Tema no encontrado con id: " + comentario.getTema().getIdTema()));
+            comentario.setTema(temaReal);
         }
+
         comentario.setFechaCreacion(LocalDateTime.now());
+        
         return comentarioRepository.save(comentario);
     }
 
@@ -45,7 +53,6 @@ public class ComentarioServiceImpl implements ComentarioService {
         existingComentario.setContenido(comentario.getContenido());
         existingComentario.setCodUsuario(comentario.getCodUsuario());
         existingComentario.setNombreUsuario(comentario.getNombreUsuario());
-        existingComentario.setCodigoComentario(comentario.getCodigoComentario());
         existingComentario.setFechaModificacion(LocalDateTime.now());
 
         return comentarioRepository.save(existingComentario);
@@ -57,5 +64,4 @@ public class ComentarioServiceImpl implements ComentarioService {
                 .orElseThrow(() -> new ComentarioNotFoundExceptionHandler("Comentario no encontrado con id: " + id));
         comentarioRepository.delete(existingComentario);
     }
-    
 }
