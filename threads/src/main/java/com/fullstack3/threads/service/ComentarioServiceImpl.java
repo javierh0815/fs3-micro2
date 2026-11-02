@@ -30,8 +30,8 @@ public class ComentarioServiceImpl implements ComentarioService {
 
     @Override
     public Comentario createComentario(Comentario comentario) {
-        if (comentarioRepository.existsByCodigoComentario(comentario.getCodigo_comentario())) {
-            throw new ComentarioAlreadyExists("El comentario con el código " + comentario.getCodigo_comentario() + " ya existe.");
+        if (comentarioRepository.existsByCodigoComentario(comentario.getCodigoComentario())) {
+            throw new ComentarioAlreadyExists("El comentario con el código " + comentario.getCodigoComentario() + " ya existe.");
         }
         comentario.setFechaCreacion(LocalDateTime.now());
         return comentarioRepository.save(comentario);
@@ -45,7 +45,7 @@ public class ComentarioServiceImpl implements ComentarioService {
         existingComentario.setContenido(comentario.getContenido());
         existingComentario.setCodUsuario(comentario.getCodUsuario());
         existingComentario.setNombreUsuario(comentario.getNombreUsuario());
-        existingComentario.setCodigo_comentario(comentario.getCodigo_comentario());
+        existingComentario.setCodigoComentario(comentario.getCodigoComentario());
         existingComentario.setFechaModificacion(LocalDateTime.now());
 
         return comentarioRepository.save(existingComentario);

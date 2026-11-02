@@ -15,10 +15,10 @@ public class Categoria {
     private Long idCategoria;
 
     @Column(name = "codigo_categoria", nullable = false, unique = true, length = 10)
-    private String codigo_categoria;
+    private String codigoCategoria;
 
     @Column(name ="categoria", nullable = false, length = 100)
-    private String nombre_categoria;
+    private String nombreCategoria;
 
     @Column(name = "fecha_creacion", nullable = false)
     private LocalDateTime fechaCreacion;
@@ -33,10 +33,10 @@ public class Categoria {
     public Categoria() {
     }
 
-    public Categoria(Long idCategoria, String codigo_categoria, String nombre_categoria, LocalDateTime fechaCreacion, LocalDateTime fechaModificacion, LocalDateTime fechaCierre) {
+    public Categoria(Long idCategoria, String codigoCategoria, String nombreCategoria, LocalDateTime fechaCreacion, LocalDateTime fechaModificacion, LocalDateTime fechaCierre) {
         this.idCategoria = idCategoria;
-        this.codigo_categoria = codigo_categoria;
-        this.nombre_categoria = nombre_categoria;
+        this.codigoCategoria = codigoCategoria;
+        this.nombreCategoria = nombreCategoria;
         this.fechaCreacion = fechaCreacion;
         this.fechaModificacion = fechaModificacion;
         this.fechaCierre = fechaCierre;
@@ -50,20 +50,20 @@ public class Categoria {
         this.idCategoria = idCategoria;
     }
 
-    public String getNombre_categoria() {
-        return nombre_categoria;
+    public String getNombreCategoria() {
+        return nombreCategoria;
     }
 
-    public void setNombre_categoria(String nombre_categoria) {
-        this.nombre_categoria = nombre_categoria;
+    public void setNombreCategoria(String nombreCategoria) {
+        this.nombreCategoria = nombreCategoria;
     }
 
-    public String getCodigo_categoria() {
-        return codigo_categoria;
+    public String getCodigoCategoria() {
+        return codigoCategoria;
     }
 
-    public void setCodigo_categoria(String codigo_categoria) {
-        this.codigo_categoria = codigo_categoria;
+    public void setCodigoCategoria(String codigoCategoria) {
+        this.codigoCategoria = codigoCategoria;
     }
 
     public LocalDateTime getFechaCreacion() {

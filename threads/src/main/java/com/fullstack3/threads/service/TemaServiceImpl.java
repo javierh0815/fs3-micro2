@@ -30,8 +30,8 @@ public class TemaServiceImpl implements TemaService {
 
     @Override
     public Tema createTema(Tema tema) {
-        if (temaRepository.existsByCodigoTema(tema.getCodigo_tema())) {
-            throw new TemaAlreadyExistsExceptionHandler("El tema con el código " + tema.getCodigo_tema() + " ya existe.");
+        if (temaRepository.existsByCodigoTema(tema.getCodigoTema())) {
+            throw new TemaAlreadyExistsExceptionHandler("El tema con el código " + tema.getCodigoTema() + " ya existe.");
         }
         tema.setFechaCreacion(LocalDateTime.now());
         return temaRepository.save(tema);
@@ -45,7 +45,7 @@ public class TemaServiceImpl implements TemaService {
         existingTema.setTitulo(tema.getTitulo());
         existingTema.setCodUsuario(tema.getCodUsuario());
         existingTema.setNombreUsuario(tema.getNombreUsuario());
-        existingTema.setCodigo_tema(tema.getCodigo_tema());
+        existingTema.setCodigoTema(tema.getCodigoTema());
         existingTema.setFechaModificacion(LocalDateTime.now());
 
         return temaRepository.save(existingTema);

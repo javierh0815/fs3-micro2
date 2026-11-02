@@ -13,7 +13,7 @@ public class Comentario {
     private Long idComentario;
 
     @Column(name = "codigo_comentario", nullable = false, unique = true, length = 10)
-    private String codigo_comentario;
+    private String codigoComentario;
 
     @Column(name = "contenido", nullable = false, length = 500)
     private String contenido;
@@ -47,9 +47,9 @@ public class Comentario {
     public Comentario() {
     }
 
-    public Comentario(Long idComentario, String codigo_comentario, String contenido, Long codUsuario, String nombreUsuario, LocalDateTime fechaCreacion, LocalDateTime fechaModificacion, LocalDateTime fechaCierre, Tema tema) {
+    public Comentario(Long idComentario, String codigoComentario, String contenido, Long codUsuario, String nombreUsuario, LocalDateTime fechaCreacion, LocalDateTime fechaModificacion, LocalDateTime fechaCierre, Tema tema) {
         this.idComentario = idComentario;
-        this.codigo_comentario = codigo_comentario;
+        this.codigoComentario = codigoComentario;
         this.contenido = contenido;
         this.codUsuario = codUsuario;
         this.nombreUsuario = nombreUsuario;
@@ -123,11 +123,11 @@ public class Comentario {
         this.tema = tema;
     }
 
-    public String getCodigo_comentario() {
-        return codigo_comentario;
+    public String getCodigoComentario() {
+        return codigoComentario;
     }
 
-    public void setCodigo_comentario(String codigo_comentario) {
-        this.codigo_comentario = codigo_comentario;
+    public void setCodigoComentario(String codigoComentario) {
+        this.codigoComentario = codigoComentario;
     }
 }

@@ -14,7 +14,7 @@ public class Tema {
     private Long idTema;
 
     @Column (name = "codigo_tema", nullable = false, unique = true, length = 10)
-    private String codigo_tema;
+    private String codigoTema;
     
     @Column(name = "titulo", nullable = false, length = 100)
     private String titulo;
@@ -49,9 +49,9 @@ public class Tema {
     public Tema() {
     }
 
-    public Tema(Long idTema, String codigo_tema, String titulo, Long codUsuario, String nombreUsuario, LocalDateTime fechaCreacion, LocalDateTime fechaModificacion, LocalDateTime fechaCierre, Categoria categoria) {
+    public Tema(Long idTema, String codigoTema, String titulo, Long codUsuario, String nombreUsuario, LocalDateTime fechaCreacion, LocalDateTime fechaModificacion, LocalDateTime fechaCierre, Categoria categoria) {
         this.idTema = idTema;
-        this.codigo_tema = codigo_tema;
+        this.codigoTema = codigoTema;
         this.titulo = titulo;
         this.codUsuario = codUsuario;
         this.nombreUsuario = nombreUsuario;
@@ -125,12 +125,12 @@ public class Tema {
         this.comentarios = comentarios;
     }
 
-    public String getCodigo_tema() {
-        return codigo_tema;
+    public String getCodigoTema() {
+        return codigoTema;
     }
 
-    public void setCodigo_tema(String codigo_tema) {
-        this.codigo_tema = codigo_tema;
+    public void setCodigoTema(String codigoTema) {
+        this.codigoTema = codigoTema;
     }
 
     public LocalDateTime getFechaModificacion() {

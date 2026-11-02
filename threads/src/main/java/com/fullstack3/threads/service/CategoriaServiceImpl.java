@@ -31,8 +31,8 @@ public class CategoriaServiceImpl implements CategoriaService {
     
     @Override
     public Categoria createCategoria(Categoria categoria) {
-        if (categoriaRepository.existsByCodigoCategoria(categoria.getCodigo_categoria())) {
-            throw new CategoriaAlreadyExists("La categoría con el código " + categoria.getCodigo_categoria() + " ya existe.");
+        if (categoriaRepository.existsByCodigoCategoria(categoria.getCodigoCategoria())) {
+            throw new CategoriaAlreadyExists("La categoría con el código " + categoria.getCodigoCategoria() + " ya existe.");
         }
         categoria.setFechaCreacion(LocalDateTime.now());
         return categoriaRepository.save(categoria);
@@ -43,8 +43,8 @@ public class CategoriaServiceImpl implements CategoriaService {
         Categoria existingCategoria = categoriaRepository.findById(id)
                 .orElseThrow(() -> new CategoriaNotFoundExceptionHandler("Categoría no encontrada con id: " + id));
         
-        existingCategoria.setNombre_categoria(categoria.getNombre_categoria());
-        existingCategoria.setCodigo_categoria(categoria.getCodigo_categoria());
+        existingCategoria.setNombreCategoria(categoria.getNombreCategoria());
+        existingCategoria.setCodigoCategoria(categoria.getCodigoCategoria());
         existingCategoria.setFechaModificacion(LocalDateTime.now());
         
         return categoriaRepository.save(existingCategoria);
