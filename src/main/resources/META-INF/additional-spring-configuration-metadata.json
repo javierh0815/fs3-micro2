@@ -1,5 +1,12 @@
-{"properties": [{
-  "name": "usuarios.service.url",
-  "type": "java.lang.String",
-  "description": "URL base del microservicio de Usuarios."
-}]}
+{"properties": [
+  {
+    "name": "usuarios.service.url",
+    "type": "java.lang.String",
+    "description": "URL base del microservicio de Usuarios."
+  },
+  {
+    "name": "cors.allowed.origins",
+    "type": "java.lang.String",
+    "description": "Orígenes permitidos para CORS."
+  }
+]}
