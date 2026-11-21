@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.fullstack3.threads.model.Categoria;
 
 public interface CategoriaRepository extends JpaRepository<Categoria, Long> {
-    boolean existsByCodigoCategoria(String codigoCategoria);
+    boolean existsByCodigoCategoria(Integer codigoCategoria);
     Optional<Categoria> findByCodigoCategoria(String codigoCategoria);
     
 }

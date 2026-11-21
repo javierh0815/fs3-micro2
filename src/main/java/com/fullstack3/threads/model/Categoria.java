@@ -1,12 +1,14 @@
 package com.fullstack3.threads.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
+import org.hibernate.annotations.Generated;
+import org.hibernate.generator.EventType;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import jakarta.persistence.*;
-
 @Entity 
-@Table(name="categorias")
+@Table(name = "categorias")
 public class Categoria {
 
     @Id 
@@ -14,10 +16,11 @@ public class Categoria {
     @Column(name = "id_categoria")
     private Long idCategoria;
 
-    @Column(name = "codigo_categoria", nullable = false, unique = true, insertable = false, updatable = false)
-    private String codigoCategoria;
+    @Generated(event = EventType.INSERT)
+    @Column(name = "cod_categoria", nullable = false, unique = true, insertable = false, updatable = false)
+    private Integer codigoCategoria;
 
-    @Column(name ="categoria", nullable = false, length = 100)
+    @Column(name = "categoria", nullable = false, length = 100)
     private String nombreCategoria;
 
     @Column(name = "fecha_creacion", nullable = false)
@@ -29,17 +32,33 @@ public class Categoria {
     @Column(name = "fecha_cierre", nullable = true)
     private LocalDateTime fechaCierre;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "categoria", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Tema> temas;
 
     public Categoria() {
     }
 
-    public Categoria(Long idCategoria, String codigoCategoria, String nombreCategoria, LocalDateTime fechaCreacion, LocalDateTime fechaModificacion, LocalDateTime fechaCierre) {
+    public Categoria(Long idCategoria, Integer codigoCategoria, String nombreCategoria, 
+                     LocalDateTime fechaCreacion, LocalDateTime fechaModificacion, LocalDateTime fechaCierre) {
         this.idCategoria = idCategoria;
         this.codigoCategoria = codigoCategoria;
         this.nombreCategoria = nombreCategoria;
         this.fechaCreacion = fechaCreacion;
         this.fechaModificacion = fechaModificacion;
         this.fechaCierre = fechaCierre;
+    }
+
+    @PrePersist
+    public void prePersist() {
+        LocalDateTime ahora = LocalDateTime.now();
+        this.fechaCreacion = ahora;
+        this.fechaModificacion = ahora;
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        this.fechaModificacion = LocalDateTime.now();
     }
 
     public Long getIdCategoria() {
@@ -50,20 +69,20 @@ public class Categoria {
         this.idCategoria = idCategoria;
     }
 
+    public Integer getCodigoCategoria() {
+        return codigoCategoria;
+    }
+
+    public void setCodigoCategoria(Integer codigoCategoria) {
+        this.codigoCategoria = codigoCategoria;
+    }
+
     public String getNombreCategoria() {
         return nombreCategoria;
     }
 
     public void setNombreCategoria(String nombreCategoria) {
         this.nombreCategoria = nombreCategoria;
-    }
-
-    public String getCodigoCategoria() {
-        return codigoCategoria;
-    }
-
-    public void setCodigoCategoria(String codigoCategoria) {
-        this.codigoCategoria = codigoCategoria;
     }
 
     public LocalDateTime getFechaCreacion() {
@@ -90,27 +109,11 @@ public class Categoria {
         this.fechaCierre = fechaCierre;
     }
 
-
-    @OneToMany(mappedBy = "categoria", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Tema> temas;
-
-    
-    @PrePersist
-    public void prePersist() {
-        LocalDateTime ahora = LocalDateTime.now();
-        this.fechaCreacion = ahora;
-        this.fechaModificacion = ahora;
+    public List<Tema> getTemas() {
+        return temas;
     }
 
-    @PreUpdate
-    public void preUpdate() {
-        this.fechaModificacion = LocalDateTime.now();
+    public void setTemas(List<Tema> temas) {
+        this.temas = temas;
     }
-
-
-
-
-
-
-
 }

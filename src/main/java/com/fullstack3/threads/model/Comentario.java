@@ -1,6 +1,9 @@
 package com.fullstack3.threads.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import org.hibernate.annotations.Generated;
+import org.hibernate.generator.EventType;
 import java.time.LocalDateTime;
 
 @Entity
@@ -12,15 +15,15 @@ public class Comentario {
     @Column(name = "id_comentario")
     private Long idComentario;
 
-    @Column(name = "codigo_comentario", nullable = false, unique = true, insertable = false, updatable = false)
-    private String codigoComentario;
+    @Generated(event = EventType.INSERT)
+    @Column(name = "cod_comentario", nullable = false, unique = true, insertable = false, updatable = false)
+    private Integer codigoComentario;
 
     @Column(name = "contenido", nullable = false, length = 500)
     private String contenido;
 
     @Column(name = "cod_usuario", nullable = false)
-    private Long codUsuario;
-
+    private Integer codUsuario;
 
     @Column(name = "nombre_usuario", nullable = false, length = 100)
     private String nombreUsuario;
@@ -36,18 +39,27 @@ public class Comentario {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_tema", nullable = false)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Tema tema;
 
     @PrePersist
     public void prePersist() {
-        this.fechaCreacion = LocalDateTime.now();
-        this.fechaModificacion = LocalDateTime.now(); 
+        LocalDateTime ahora = LocalDateTime.now();
+        this.fechaCreacion = ahora;
+        this.fechaModificacion = ahora; 
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        this.fechaModificacion = LocalDateTime.now();
     }
 
     public Comentario() {
     }
 
-    public Comentario(Long idComentario, String codigoComentario, String contenido, Long codUsuario, String nombreUsuario, LocalDateTime fechaCreacion, LocalDateTime fechaModificacion, LocalDateTime fechaCierre, Tema tema) {
+    public Comentario(Long idComentario, Integer codigoComentario, String contenido, Integer codUsuario, 
+                      String nombreUsuario, LocalDateTime fechaCreacion, LocalDateTime fechaModificacion, 
+                      LocalDateTime fechaCierre, Tema tema) {
         this.idComentario = idComentario;
         this.codigoComentario = codigoComentario;
         this.contenido = contenido;
@@ -67,6 +79,14 @@ public class Comentario {
         this.idComentario = idComentario;
     }
 
+    public Integer getCodigoComentario() {
+        return codigoComentario;
+    }
+
+    public void setCodigoComentario(Integer codigoComentario) {
+        this.codigoComentario = codigoComentario;
+    }
+
     public String getContenido() {
         return contenido;
     }
@@ -75,11 +95,11 @@ public class Comentario {
         this.contenido = contenido;
     }
 
-    public Long getCodUsuario() {
+    public Integer getCodUsuario() {
         return codUsuario;
     }
 
-    public void setCodUsuario(Long codUsuario) {
+    public void setCodUsuario(Integer codUsuario) {
         this.codUsuario = codUsuario;
     }
 
@@ -121,13 +141,5 @@ public class Comentario {
 
     public void setTema(Tema tema) {
         this.tema = tema;
-    }
-
-    public String getCodigoComentario() {
-        return codigoComentario;
-    }
-
-    public void setCodigoComentario(String codigoComentario) {
-        this.codigoComentario = codigoComentario;
     }
 }
