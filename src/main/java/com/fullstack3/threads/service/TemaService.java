@@ -1,15 +1,16 @@
 package com.fullstack3.threads.service;
 
 import java.util.List;
-import com.fullstack3.threads.model.Tema;
-
+import com.fullstack3.threads.dto.TemaRequestDTO;
+import com.fullstack3.threads.dto.TemaResponseDTO;
 
 public interface TemaService {
-    
-    List<Tema> getAllTemas();
-    Tema getTemaById(Long id);
-    Tema createTema(Tema tema);
-    Tema updateTema(Long id, Tema tema);
+
+    List<TemaResponseDTO> getAllTemas();
+    TemaResponseDTO getTemaById(Long id);
+    List<TemaResponseDTO> getTemasByCategoria(Long idCategoria);
+    TemaResponseDTO createTema(TemaRequestDTO request);
+    TemaResponseDTO updateTema(Long id, TemaRequestDTO request);
     void deleteTema(Long id);
     
 }

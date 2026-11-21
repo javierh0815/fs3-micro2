@@ -1,14 +1,16 @@
 package com.fullstack3.threads.service;
 
 import java.util.List;
-import com.fullstack3.threads.model.Comentario;
+import com.fullstack3.threads.dto.ComentarioRequestDTO;
+import com.fullstack3.threads.dto.ComentarioResponseDTO;
 
 public interface ComentarioService {
 
-    List<Comentario> getAllComentarios();
-    Comentario getComentarioById(Long id);
-    Comentario createComentario(Comentario comentario);
-    Comentario updateComentario(Long id, Comentario comentario);
+    List<ComentarioResponseDTO> getAllComentarios();
+    ComentarioResponseDTO getComentarioById(Long id);
+    List<ComentarioResponseDTO> getComentariosByTema(Long idTema);
+    ComentarioResponseDTO createComentario(ComentarioRequestDTO request);
+    ComentarioResponseDTO updateComentario(Long id, ComentarioRequestDTO request);
     void deleteComentario(Long id);
     
 }

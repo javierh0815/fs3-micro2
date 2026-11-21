@@ -1,55 +1,67 @@
 package com.fullstack3.threads.service;
 
 import org.springframework.stereotype.Service;
-import java.util.List;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import com.fullstack3.threads.dto.CategoriaRequestDTO;
+import com.fullstack3.threads.dto.CategoriaResponseDTO;
+import com.fullstack3.threads.exception.CategoriaAlreadyExists;
+import com.fullstack3.threads.exception.CategoriaNotFoundExceptionHandler;
 import com.fullstack3.threads.model.Categoria;
 import com.fullstack3.threads.repository.CategoriaRepository;
-import com.fullstack3.threads.exception.CategoriaNotFoundExceptionHandler;
-import com.fullstack3.threads.exception.CategoriaAlreadyExists;
 
 @Service
 public class CategoriaServiceImpl implements CategoriaService {
 
-
     private final CategoriaRepository categoriaRepository;
 
-    public CategoriaServiceImpl(CategoriaRepository categoriaRepository){
+    public CategoriaServiceImpl(CategoriaRepository categoriaRepository) {
         this.categoriaRepository = categoriaRepository;
     }
 
-    @Override 
-    public List<Categoria> getAllCategorias() {
-        return categoriaRepository.findAll();
+    @Override
+    public List<CategoriaResponseDTO> getAllCategorias() {
+        return categoriaRepository.findAll()
+                .stream()
+                .map(this::mapToResponseDTO)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public Categoria getCategoriaById(Long id) {
-        return categoriaRepository.findById(id)
-                .orElse(null);
+    public CategoriaResponseDTO getCategoriaById(Long id) {
+        Categoria categoria = categoriaRepository.findById(id)
+                .orElseThrow(() -> new CategoriaNotFoundExceptionHandler("Categoría no encontrada con id: " + id));
+        return mapToResponseDTO(categoria);
     }
-    
+
     @Override
-    public Categoria createCategoria(Categoria categoria) {
-        if (categoriaRepository.existsByCodigoCategoria(categoria.getCodigoCategoria())) {
-            throw new CategoriaAlreadyExists("La categoría con el código " + categoria.getCodigoCategoria() + " ya existe.");
+    public CategoriaResponseDTO createCategoria(CategoriaRequestDTO request) {
+        if (categoriaRepository.existsByNombreCategoriaIgnoreCase(request.getNombreCategoria())) {
+            throw new CategoriaAlreadyExists("La categoría '" + request.getNombreCategoria() + "' ya existe.");
         }
-        categoria.setFechaCreacion(LocalDateTime.now());
-        return categoriaRepository.save(categoria);
+
+        Categoria nuevaCategoria = new Categoria();
+        nuevaCategoria.setNombreCategoria(request.getNombreCategoria());
+        nuevaCategoria.setFechaCreacion(LocalDateTime.now());
+        nuevaCategoria.setFechaModificacion(LocalDateTime.now());
+
+        Categoria guardada = categoriaRepository.save(nuevaCategoria);
+        return mapToResponseDTO(guardada);
     }
 
     @Override
-    public Categoria updateCategoria(Long id, Categoria categoria) {
+    public CategoriaResponseDTO updateCategoria(Long id, CategoriaRequestDTO request) {
         Categoria existingCategoria = categoriaRepository.findById(id)
                 .orElseThrow(() -> new CategoriaNotFoundExceptionHandler("Categoría no encontrada con id: " + id));
-        
-        existingCategoria.setNombreCategoria(categoria.getNombreCategoria());
-        existingCategoria.setCodigoCategoria(categoria.getCodigoCategoria());
-        existingCategoria.setFechaModificacion(LocalDateTime.now());
-        
-        return categoriaRepository.save(existingCategoria);
-    }
 
+        existingCategoria.setNombreCategoria(request.getNombreCategoria());
+        existingCategoria.setFechaModificacion(LocalDateTime.now());
+
+        Categoria actualizada = categoriaRepository.save(existingCategoria);
+        return mapToResponseDTO(actualizada);
+    }
 
     @Override
     public void deleteCategoria(Long id) {
@@ -57,5 +69,15 @@ public class CategoriaServiceImpl implements CategoriaService {
                 .orElseThrow(() -> new CategoriaNotFoundExceptionHandler("Categoría no encontrada con id: " + id));
         categoriaRepository.delete(existingCategoria);
     }
-    
+
+    private CategoriaResponseDTO mapToResponseDTO(Categoria categoria) {
+        return new CategoriaResponseDTO(
+                categoria.getIdCategoria(),
+                categoria.getCodigoCategoria(),
+                categoria.getNombreCategoria(),
+                categoria.getFechaCreacion(),
+                categoria.getFechaModificacion(),
+                categoria.getFechaCierre()
+        );
+    }
 }

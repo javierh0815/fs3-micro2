@@ -3,13 +3,14 @@ package com.fullstack3.threads.controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import jakarta.validation.Valid; 
+import jakarta.validation.Valid;
 import java.util.List;
 
-import com.fullstack3.threads.model.Categoria;
+import com.fullstack3.threads.dto.CategoriaRequestDTO;
+import com.fullstack3.threads.dto.CategoriaResponseDTO;
 import com.fullstack3.threads.service.CategoriaService;
 
-@RestController 
+@RestController
 @RequestMapping("/categorias")
 public class CategoriasController {
 
@@ -20,41 +21,29 @@ public class CategoriasController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Categoria>> getAllCategorias() {
-        List<Categoria> categorias = categoriaService.getAllCategorias();
-        return new ResponseEntity<>(categorias, HttpStatus.OK);
+    public ResponseEntity<List<CategoriaResponseDTO>> getAllCategorias() {
+        return ResponseEntity.ok(categoriaService.getAllCategorias());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Categoria> getCategoriaById(@PathVariable Long id) {
-        Categoria categoria = categoriaService.getCategoriaById(id);
-        if (categoria != null) {
-            return ResponseEntity.ok(categoria);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<CategoriaResponseDTO> getCategoriaById(@PathVariable Long id) {
+        return ResponseEntity.ok(categoriaService.getCategoriaById(id));
     }
 
     @PostMapping
-    public ResponseEntity<Categoria> createCategoria(@Valid @RequestBody Categoria categoria) {
-        Categoria createdCategoria = categoriaService.createCategoria(categoria);
+    public ResponseEntity<CategoriaResponseDTO> createCategoria(@Valid @RequestBody CategoriaRequestDTO request) {
+        CategoriaResponseDTO createdCategoria = categoriaService.createCategoria(request);
         return new ResponseEntity<>(createdCategoria, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Categoria> updateCategoria(@PathVariable Long id, @Valid @RequestBody Categoria categoria) {
-        Categoria updatedCategoria = categoriaService.updateCategoria(id, categoria);
-        if (updatedCategoria != null) {
-            return ResponseEntity.ok(updatedCategoria);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<CategoriaResponseDTO> updateCategoria(@PathVariable Long id, @Valid @RequestBody CategoriaRequestDTO request) {
+        return ResponseEntity.ok(categoriaService.updateCategoria(id, request));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCategoria(@PathVariable Long id) {
         categoriaService.deleteCategoria(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return ResponseEntity.noContent().build();
     }
-    
 }

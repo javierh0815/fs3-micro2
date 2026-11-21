@@ -3,10 +3,11 @@ package com.fullstack3.threads.controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import jakarta.validation.Valid; 
+import jakarta.validation.Valid;
 import java.util.List;
 
-import com.fullstack3.threads.model.Tema;
+import com.fullstack3.threads.dto.TemaRequestDTO;
+import com.fullstack3.threads.dto.TemaResponseDTO;
 import com.fullstack3.threads.service.TemaService;
 
 @RestController
@@ -20,51 +21,34 @@ public class TemasController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Tema>> getAllTemas() {
-        List<Tema> temas = temaService.getAllTemas();
-        return new ResponseEntity<>(temas, HttpStatus.OK);
+    public ResponseEntity<List<TemaResponseDTO>> getAllTemas() {
+        return ResponseEntity.ok(temaService.getAllTemas());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Tema> getTemaById(@PathVariable Long id) {
-        Tema tema = temaService.getTemaById(id);
-        if (tema != null) {
-            return ResponseEntity.ok(tema);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<TemaResponseDTO> getTemaById(@PathVariable Long id) {
+        return ResponseEntity.ok(temaService.getTemaById(id));
+    }
+
+    @GetMapping("/categoria/{idCategoria}")
+    public ResponseEntity<List<TemaResponseDTO>> getTemasByCategoria(@PathVariable Long idCategoria) {
+        return ResponseEntity.ok(temaService.getTemasByCategoria(idCategoria));
     }
 
     @PostMapping
-    public ResponseEntity<Tema> createTema(@Valid @RequestBody Tema tema) {
-        Tema createdTema = temaService.createTema(tema);
+    public ResponseEntity<TemaResponseDTO> createTema(@Valid @RequestBody TemaRequestDTO request) {
+        TemaResponseDTO createdTema = temaService.createTema(request);
         return new ResponseEntity<>(createdTema, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Tema> updateTema(@PathVariable Long id, @Valid @RequestBody Tema tema) {
-        Tema updatedTema = temaService.updateTema(id, tema);
-        if (updatedTema != null) {
-            return ResponseEntity.ok(updatedTema);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<TemaResponseDTO> updateTema(@PathVariable Long id, @Valid @RequestBody TemaRequestDTO request) {
+        return ResponseEntity.ok(temaService.updateTema(id, request));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteTema(@PathVariable Long id) {
         temaService.deleteTema(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return ResponseEntity.noContent().build();
     }
-
-
-
-
-
-
-
-
-
-
-
 }
