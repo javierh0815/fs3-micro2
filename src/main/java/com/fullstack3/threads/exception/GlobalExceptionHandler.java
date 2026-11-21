@@ -1,44 +1,55 @@
 package com.fullstack3.threads.exception;
 
-
 import java.time.LocalDateTime;
 import java.util.HashMap;
-import java.util.Map; 
+import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.client.ResourceAccessException;
 
-@ControllerAdvice 
+@ControllerAdvice
 public class GlobalExceptionHandler {
+
+    @ExceptionHandler(ResourceAccessException.class)
+    public ResponseEntity<Object> handleServiceUnavailable(ResourceAccessException ex) {
+        Map<String, Object> response = new HashMap<>();
+        response.put("timestamp", LocalDateTime.now());
+        response.put("message", "El servicio de usuarios no está disponible en este momento");
+        response.put("details", ex.getMessage());
+        response.put("status", HttpStatus.SERVICE_UNAVAILABLE.value());
+
+        return new ResponseEntity<>(response, HttpStatus.SERVICE_UNAVAILABLE);
+    }
 
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<Object> handleRuntimeException(RuntimeException ex) {
-            Map<String, Object> response = new HashMap<>();
-            response.put("timestamp", LocalDateTime.now());
-            response.put("message", "Error en la solicitud");
-            response.put("details", ex.getMessage());
-            response.put("status", HttpStatus.BAD_REQUEST.value());
+        Map<String, Object> response = new HashMap<>();
+        response.put("timestamp", LocalDateTime.now());
+        response.put("message", "Error en la solicitud");
+        response.put("details", ex.getMessage());
+        response.put("status", HttpStatus.BAD_REQUEST.value());
 
-            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Object> handleValidationException(MethodArgumentNotValidException ex) {
-                Map<String, String> errors = new HashMap<>();
-            
-                ex.getBindingResult().getFieldErrors().forEach(error -> {
-                    errors.put(error.getField(), error.getDefaultMessage());
-                });
-            
-                Map<String, Object> response = new HashMap<>();
-                response.put("timestamp", LocalDateTime.now());
-                response.put("message", "Validación fallida: Verifique los datos ingresados");
-                response.put("errors", errors);
-                response.put("status", HttpStatus.BAD_REQUEST.value());
-            
-                return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        Map<String, String> errors = new HashMap<>();
+
+        ex.getBindingResult().getFieldErrors().forEach(error -> {
+            errors.put(error.getField(), error.getDefaultMessage());
+        });
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("timestamp", LocalDateTime.now());
+        response.put("message", "Validación fallida: Verifique los datos ingresados");
+        response.put("errors", errors);
+        response.put("status", HttpStatus.BAD_REQUEST.value());
+
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(Exception.class)
@@ -48,10 +59,10 @@ public class GlobalExceptionHandler {
         Map<String, Object> response = new HashMap<>();
         response.put("timestamp", LocalDateTime.now());
         response.put("message", "Error interno en el Sistema de Gestión del Foro");
-        response.put("details", ex.getMessage()); 
+        response.put("details", ex.getMessage());
         response.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
 
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
-    
+
 }
