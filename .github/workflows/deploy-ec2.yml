@@ -67,7 +67,7 @@ jobs:
               \"aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $ECR_REGISTRY\",
               \"docker pull $ECR_REGISTRY/$ECR_REPOSITORY:latest\",
               \"docker rm -f $CONTAINER_NAME || true\",
-              \"docker run -d --name $CONTAINER_NAME --restart unless-stopped -p 127.0.0.1:8081:8081 -v /opt/oracle-wallet:/app/wallet:ro -e TNS_ADMIN=/app/wallet -e SPRING_DATASOURCE_URL=\\\"\$DB_URL\\\" -e SPRING_DATASOURCE_USERNAME=\\\"\$DB_USERNAME\\\" -e SPRING_DATASOURCE_PASSWORD=\\\"\$DB_PASSWORD\\\" -e USUARIOS_SERVICE_URL=http://172.17.0.1:8080 $ECR_REGISTRY/$ECR_REPOSITORY:latest\"
+              \"docker run -d --name $CONTAINER_NAME --restart unless-stopped --network host -v /opt/oracle-wallet:/app/wallet:ro -e TNS_ADMIN=/app/wallet -e SPRING_DATASOURCE_URL=\\\"\$DB_URL\\\" -e SPRING_DATASOURCE_USERNAME=\\\"\$DB_USERNAME\\\" -e SPRING_DATASOURCE_PASSWORD=\\\"\$DB_PASSWORD\\\" -e USUARIOS_SERVICE_URL=http://127.0.0.1:8080 $ECR_REGISTRY/$ECR_REPOSITORY:latest\"
             ]" \
             --query "Command.CommandId" \
             --output text)
