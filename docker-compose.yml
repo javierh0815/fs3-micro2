@@ -1,0 +1,7 @@
+services:
+  threads:
+    build: .
+    network_mode: host
+    volumes:
+      - /Wallet_ACT0MWAMO1BQMH0R:/Wallet_ACT0MWAMO1BQMH0R:ro
+    restart: always
