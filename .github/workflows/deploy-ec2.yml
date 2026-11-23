@@ -3,7 +3,7 @@ name: Deploy threads to EC2
 on:
   push:
     branches:
-      - deploy
+      - main
   workflow_dispatch:
 
 permissions:
